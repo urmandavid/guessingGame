@@ -6,6 +6,7 @@ import java.io.Console;
  * Here's the unfinished source code for the Guesser class. It is your task to
  * complete the missing parts.
  */
+
 public class Guesser {
     private int low;
     private int high;
@@ -29,9 +30,10 @@ public class Guesser {
      * Task 2. Complete the start() method, so that in the method body, you call
      * first the rules() method, next the doGuesses() method.
      */
+
     public void start() {
-        // call the rules method here
-        // call the doGuesses() method here
+        rules();        // call the rules method here
+        doGuesses();    // call the doGuesses() method here
     }
 
     private void rules() {
