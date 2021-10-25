@@ -20,6 +20,10 @@ public class Guesser {
      */
 
     // Write the constructor below this line.
+    public Guesser(int low, int high) {
+        this.low = low;
+        this.high = high;
+    }
 
     /*
      * Task 2. Complete the start() method, so that in the method body, you call
