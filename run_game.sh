@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo $USER"s program"
-mkdir $USER"_labb"
-cp Guesser.java GuessingGame.java $USER"_labb"
-cd $USER"_labb"
+echo "David_Urmans program"
+mkdir "David_Urman_labb"
+cp Guesser.java GuessingGame.java "David_Urman_labb"
+cd "David_Urman_labb"
 echo -n "Running game from "
 pwd
 
@@ -17,4 +17,3 @@ echo "Done!"
 echo "Removing class files..."
 rm *.class
 ls
-
