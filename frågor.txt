@@ -1,0 +1,167 @@
+-----------------------------------------------------------------------------------------------
+Svar för inlämningsuppgift (Jag siktar på VG):
+
+
+*** När använder man add respektive commit? ***
+
+-> Vi använder ' add ' för att lägga till en fil i Staging Environment, 
+filen kommer då bli "staged" och redo att "commit:as" 
+till den repository vi arbetar med - detta görs genom ' commit '.
+
+
+*** Vad är pull respektive push? ***
+
+-> Vi använder ' pull ' för att hämta alla ändringar från en GitHub-repository (remote), 
+till den branch vi arbetar med i vår vår lokala git-repository (på vår dator).
+Vi använder ' push ' för att skicka de ändringar vi gjort i koden till vår remote repository 
+på GitHub.
+
+
+*** När använder man log respektive status? ***
+
+-> Vi använder ' log ' för att se historik över commits i vår repository.
+När vi använder ' status ' får vi se vilken branch vi befinner oss på, 
+"Untracked files" som inte blivit staged ännu, "Changes not staged for commit", 
+samt "Changes to be committed" - filer som är Staged men ej comitted ännu. 
+Vi ser även om ändringar gjorts i filer.
+
+
+*** Hur kan man formulera sig i sina commit-meddelanden? ***
+
+-> Kort och koncist. En commit per *viktig ändring som gjorts.
+Ett exempel på commit-meddelande: 
+"created constructor in exampleClass.java"
+(git commit -m "...Example message...")
+
+
+*** Förklara skillnaden mellan - och motivera när - man skulle kunna 
+använda olika metoder för att rulla tillbaka kod till ett tidigare tillstånd. 
+Ge exempel på de kommandon du använder för att göra detta 
+och visa att det fungerar, vilken output du fick från git-kommandona. ***
+
+-> Skapa ny branch och byta mellan main (master) och den nya branchen när man gjort ändringar.
+' branch ', ' checkout ', etc... Output från kommandon följer nedan:
+
+urman@LEGION:/mnt/c/Users/urman/source/repos/utvecklingsverktyg/git-inlamning/guessingGame$ 
+git branch test-branch
+
+urman@LEGION:/mnt/c/Users/urman/source/repos/utvecklingsverktyg/git-inlamning/guessingGame$ 
+git branch
+  * main
+  test-branch
+
+urman@LEGION:/mnt/c/Users/urman/source/repos/utvecklingsverktyg/git-inlamning/guessingGame$ 
+git checkout test-branch
+Switched to branch 'test-branch'
+
+*** Här har jag ändrat run_game.sh med nano (skriver $USER, istället för mitt namn) visar med cat:
+
+urman@LEGION:/mnt/c/Users/urman/source/repos/utvecklingsverktyg/git-inlamning/guessingGame$ 
+cat run_game.sh
+#!/bin/bash
+
+echo $USER"s program"
+mkdir $USER"_labb"
+cp Guesser.java GuessingGame.java $USER"_labb"
+cd $USER"_labb"
+echo -n "Running game from "
+pwd
+
+echo "compiling..."
+javac *.java
+echo "running..."
+java GuessingGame
+#running GuessingGame.java
+echo "Done!"
+
+echo "Removing class files..."
+rm *.class
+ls
+
+urman@LEGION:/mnt/c/Users/urman/source/repos/utvecklingsverktyg/git-inlamning/guessingGame$ 
+git add run_game.sh
+
+urman@LEGION:/mnt/c/Users/urman/source/repos/utvecklingsverktyg/git-inlamning/guessingGame$ 
+git commit -m "updating run_game.sh with $USER for test-branch"
+[test-branch 1969485] updating run_game.sh with urman for test-branch
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+*** Visar ny commit i test-branch nedan ***
+
+urman@LEGION:/mnt/c/Users/urman/source/repos/utvecklingsverktyg/git-inlamning/guessingGame$ 
+git log --oneline
+1969485 (HEAD -> test-branch) updating run_game.sh with urman for test-branch
+e6a6aa2 (origin/main, main) changed run_game.sh
+2a9654e created run_game.sh
+ed0b14b completed getReply() method + test with main class to check functionality
+8b079c6 adding call to start() method in main class GuessingGame.java
+1075842 completed start() method for Guesser.java
+05174fe created main class GuessingGame.java
+13392f8 created constructor in Guesser.java
+82b3be4 adding Guesser.java
+7b8caca adding .gitignore
+
+urman@LEGION:/mnt/c/Users/urman/source/repos/utvecklingsverktyg/git-inlamning/guessingGame$ 
+git checkout main
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+
+urman@LEGION:/mnt/c/Users/urman/source/repos/utvecklingsverktyg/git-inlamning/guessingGame$ 
+cat run_game.sh				*** OBS: Originalfilen ***
+#!/bin/bash
+echo "David_Urmans program"
+mkdir "David_Urman_labb"
+cp Guesser.java GuessingGame.java "David_Urman_labb"
+cd "David_Urman_labb"
+echo -n "Running game from "
+pwd
+
+echo "compiling..."
+javac *.java
+echo "running..."
+java GuessingGame
+#running GuessingGame.java
+echo "Done!"
+
+echo "Removing class files..."
+rm *.class
+ls
+
+*** Visar att main-branchen är som den ska ***
+
+urman@LEGION:/mnt/c/Users/urman/source/repos/utvecklingsverktyg/git-inlamning/guessingGame$ 
+git log --oneline
+e6a6aa2 (HEAD -> main, origin/main) changed run_game.sh
+2a9654e created run_game.sh
+ed0b14b completed getReply() method + test with main class to check functionality
+8b079c6 adding call to start() method in main class GuessingGame.java
+1075842 completed start() method for Guesser.java
+05174fe created main class GuessingGame.java
+13392f8 created constructor in Guesser.java
+82b3be4 adding Guesser.java
+7b8caca adding .gitignore
+
+-> På detta sätt kan jag byta mellan olika branches 
+och olika iterationer av koden i run_game.sh eller andra filer.
+Hade jag velat så hade jag även kunnat göra ' git merge test-branch ' 
+när jag befinner mig i main branch för att föra över ändringarna till main.
+
+-> Det finns tre andra commands med liknande namn som hjälper oss med att rulla tillbaka kod till tidigare skede: 
+' revert ' - handlar om att göra en ny commit som "reverts" (återgå/gör om) kodändringar som gjorts av andra commits.  
+' restore ' - handlar om att återställa filer i working tree antingen från index (staging area) eller en annan commit. 
+Detta kommando uppdaterar inte min branch. Kommandot kan även användas för att återställa filer i index från en annan commit.
+' reset ' - handlar om att uppdatera din branch, och flytta branch-tip ("den senaste" / "mest uppdaterade" commit:en) 
+för att lägga till eller ta bort commits från branchen. Detta ändrar commit-historiken.
+Detta kommando kan också användas för att återställa index (staging area), överlappar git restore.
+
+-> Skillnader - motiverar när man använder den ena eller andra metoden:
+git revert och reset ändrar historiken, dom är "history altering".
+De gör en ny commit i den tidigare branchen och flyttar branch-tip till den nya branchen. 
+
+git restore ändrar INTE vår historik. 
+Om vi exempelvis gjort temporära ändringar och INTE har gjort några commits som jag vill köra ' revert ' på. 
+och jag vill INTE heller ändra min nuvarande HEAD - bara ta bort temporära kodändringar - då är ' reset ' inte heller lämplig.
+Jag användet i detta fall ' restore '.
+
+
+//David Urman
